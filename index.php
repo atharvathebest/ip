@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Your IP Address</title>
     <style>
         body { font-family: sans-serif; text-align: center; padding-top: 50px; }
@@ -11,23 +10,17 @@
 </head>
 <body>
     <h1>Your IP Address is:</h1>
-    <div class="ip-box">
-        <?php
-        // Get IP safely
-        $ip = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
+    <div class="ip-box" id="ip">Loading...</div>
 
-        // Prepare log data
-        $details = json_encode([
-            'ip' => $ip,
-            'time' => date('Y-m-d H:i:s')
-        ]);
-
-        // Save to file (make sure file is writable)
-        file_put_contents(__DIR__ . '/visitors.log', $details . PHP_EOL, FILE_APPEND | LOCK_EX);
-
-        // Output safely
-        echo htmlspecialchars($ip, ENT_QUOTES, 'UTF-8');
-        ?>
-    </div>
+    <script>
+        fetch("https://api.ipify.org?format=json")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("ip").textContent = data.ip;
+            })
+            .catch(() => {
+                document.getElementById("ip").textContent = "Unable to fetch IP";
+            });
+    </script>
 </body>
 </html>
