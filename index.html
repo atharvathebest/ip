@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your IP Address</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        h1 { font-size: 2em; }
+        .ip-box { font-size: 3em; font-weight: bold; color: #007BFF; }
+    </style>
+</head>
+<body>
+    <h1>Your IP Address is:</h1>
+    <div class="ip-box">
+        <?php
+$ip = $_SERVER['REMOTE_ADDR'];
+$details = json_encode([
+    'ip' => $ip,
+    'time' => date('Y-m-d H:i:s')
+]);
+// Saves to a file named visitors.log
+file_put_contents('visitors.log', $details . PHP_EOL, FILE_APPEND);
+echo "Your IP: " . $ip;
+?>
+    </div>
+</body>
+</html>
